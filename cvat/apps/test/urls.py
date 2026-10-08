@@ -2,4 +2,14 @@
 #
 # SPDX-License-Identifier: MIT
 
-urlpatterns = []
+from django.urls import path
+
+from .views import TaskLabelCountsView
+
+urlpatterns = [
+    path(
+        "test/tasks/<int:task_id>/label-counts",
+        TaskLabelCountsView.as_view(),
+        name="test-task-label-counts",
+    ),
+]
