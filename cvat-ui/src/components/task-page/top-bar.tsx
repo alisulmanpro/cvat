@@ -48,6 +48,14 @@ export default function DetailsComponent(props: DetailsComponentProps): JSX.Elem
                 )}
             </Col>
             <Col>
+                <Button
+                    size='middle'
+                    className='cvat-task-label-counts-button'
+                    style={{ marginRight: 8 }}
+                    onClick={() => history.push(`/tasks/${taskInstance.id}/label-counts`)}
+                >
+                    Label counts
+                </Button>
                 <TaskActionsComponent
                     taskInstance={taskInstance}
                     onUpdateTask={onUpdateTask}

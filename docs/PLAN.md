@@ -59,3 +59,23 @@ _Dated notes added here whenever the plan changes, with the reason._
 - **Taken:** count on read with one grouped query.
 - **Rejected:** a counter table updated on every annotation save.
 - **Cost of rejecting it:** every request scans the task's shapes, so very large tasks are slower; in return there is no sync logic and counts can never drift from the real data.
+
+
+(.env) alisulmanpro@pop-os:~/alisulmanworkspace/assessment/Annotation_Analytics_in_CVAT$ python manage.py shell -c "
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
+from cvat.apps.engine.models import Task
+from cvat.apps.test.analytics import get_label_counts
+with CaptureQueriesContext(connection) as ctx:
+    rows = get_label_counts(Task.objects.get(id=1))
+print('total:', sum(r['count'] for r in rows), 'labels:', len(rows))
+print(rows[:3])
+print('queries:', len(ctx))
+print(ctx.captured_queries[-1]['sql'])
+"
+69 objects imported automatically (use -v 2 for details).
+
+total: 8109 labels: 80
+[{'label_id': 1, 'name': 'person', 'count': 2499}, {'label_id': 57, 'name': 'chair', 'count': 466}, {'label_id': 3, 'name': 'car', 'count': 416}]
+queries: 3
+SELECT "engine_label"."id", "engine_label"."task_id", "engine_label"."project_id", "engine_label"."name", "engine_label"(.(.env) alisulmanpro@pop-os:~/alisulmanworkspace/assessment/Annotation_Analytics_in_CVAT$
