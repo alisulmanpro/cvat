@@ -53,7 +53,9 @@ def generate_secret_key():
 
     secret_key_fname = "secret_key.py"  # nosec
 
-    with tempfile.NamedTemporaryFile(mode="wt", dir=keys_dir, prefix=secret_key_fname + ".") as f:
+    with tempfile.NamedTemporaryFile(
+        mode="wt", dir=keys_dir, prefix=secret_key_fname + "."
+    ) as f:
         chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         f.write("SECRET_KEY = '{}'\n".format(get_random_string(50, chars)))
 
@@ -88,10 +90,13 @@ def load_secret_key() -> str:
             case ast.Assign(targets=[ast.Name("SECRET_KEY")]):
                 secret_key = ast.literal_eval(statement_node.value)
                 if not isinstance(secret_key, str):
-                    raise ImproperlyConfigured(error_prefix + "SECRET_KEY must be a string")
+                    raise ImproperlyConfigured(
+                        error_prefix + "SECRET_KEY must be a string"
+                    )
             case _:
                 raise ImproperlyConfigured(
-                    error_prefix + "unsupported statement; only SECRET_KEY assignment is allowed"
+                    error_prefix
+                    + "unsupported statement; only SECRET_KEY assignment is allowed"
                 )
 
     if secret_key is None:
@@ -148,6 +153,7 @@ INSTALLED_APPS = [
     "cvat.apps.consensus",
     "cvat.apps.access_tokens",
     "cvat.apps.growth",
+    "cvat.apps.test",
 ]
 
 AUTH_USER_MODEL = "iam.User"
@@ -155,7 +161,9 @@ AUTH_USER_MODEL = "iam.User"
 SITE_ID = 1
 
 
-DEFAULT_DB_BULK_CREATE_BATCH_SIZE = int(os.getenv("CVAT_DEFAULT_DB_BULK_CREATE_BATCH_SIZE", 5000))
+DEFAULT_DB_BULK_CREATE_BATCH_SIZE = int(
+    os.getenv("CVAT_DEFAULT_DB_BULK_CREATE_BATCH_SIZE", 5000)
+)
 
 
 def parse_num_proxies(value: str | None) -> int | None:
@@ -798,7 +806,9 @@ if (postgres_password_file := os.getenv("CVAT_POSTGRES_PASSWORD_FILE")) is not N
             " environment variables must not be set at the same time"
         )
 
-    postgres_password = Path(postgres_password_file).read_text(encoding="UTF-8").rstrip("\n")
+    postgres_password = (
+        Path(postgres_password_file).read_text(encoding="UTF-8").rstrip("\n")
+    )
 else:
     postgres_password = os.getenv("CVAT_POSTGRES_PASSWORD", "")
 
@@ -829,7 +839,13 @@ IMPORT_CACHE_FAILED_TTL = timedelta(days=30)
 IMPORT_CACHE_SUCCESS_TTL = timedelta(hours=1)
 
 ASSET_MAX_SIZE_MB = 10
-ASSET_SUPPORTED_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf")
+ASSET_SUPPORTED_TYPES = (
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "application/pdf",
+)
 ASSET_MAX_IMAGE_SIZE = 1920
 ASSET_MAX_COUNT_PER_GUIDE = 150
 
@@ -840,7 +856,9 @@ SMOKESCREEN_ENABLED = to_bool(os.getenv("SMOKESCREEN_ENABLED", True))
 # to check configuration and throw ImproperlyConfigured if thats a case
 EMAIL_BACKEND = None
 
-ONE_RUNNING_JOB_IN_QUEUE_PER_USER = to_bool(os.getenv("ONE_RUNNING_JOB_IN_QUEUE_PER_USER", False))
+ONE_RUNNING_JOB_IN_QUEUE_PER_USER = to_bool(
+    os.getenv("ONE_RUNNING_JOB_IN_QUEUE_PER_USER", False)
+)
 
 EMAIL_VALIDATORS = []
 

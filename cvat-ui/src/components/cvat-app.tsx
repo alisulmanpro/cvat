@@ -38,6 +38,7 @@ import ModelsPageComponent from 'components/models-page/models-page';
 import TasksPageContainer from 'containers/tasks-page/tasks-page';
 import CreateTaskPageContainer from 'containers/create-task-page/create-task-page';
 import TaskPageComponent from 'components/task-page/task-page';
+import LabelCountsPage from 'components/label-counts-page/label-counts-page';
 
 import ProjectsPageComponent from 'components/projects-page/projects-page';
 import CreateProjectPageComponent from 'components/create-project-page/create-project-page';
@@ -571,6 +572,7 @@ class CVATApplication extends React.PureComponent<CVATAppProps & RouteComponentP
                                         <Route exact path='/tasks/:tid/consensus' component={ConsensusManagementPage} />
                                         <Route exact path='/tasks/:id/jobs/create' component={CreateJobPage} />
                                         <Route exact path='/tasks/:id/guide' component={AnnotationGuidePage} />
+                                        <Route exact path='/tasks/:id/label-counts' component={LabelCountsPage} />
                                         <Route exact path='/tasks/:tid/jobs/:jid' component={AnnotationPageContainer} />
                                         <Route exact path='/tasks/:tid/jobs/:jid/analytics' component={AnalyticsReportPage} />
                                         <Route exact path='/jobs' component={JobsPageComponent} />
